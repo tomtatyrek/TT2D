@@ -4,12 +4,19 @@ project(TT2D LANGUAGES CXX VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 23)
 
 add_library(TT2D STATIC src/TT2D.cpp
-                        src/TT2D.h)
+                        src/TT2D.h
+        src/math/Vector.cpp
+        src/math/Vector.h
+        src/defines.h
+        src/Application.cpp
+        src/Application.h
+        src/util/Logger.cpp
+        src/util/Logger.h
+        src/render/Window.cpp
+        src/render/Window.h)
 
-# Create an alias target that matches how you reference it in your project
 add_library(TT2D::TT2D ALIAS TT2D)
 
-# Specify include directories properly
 target_include_directories(TT2D PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<INSTALL_INTERFACE:include>
