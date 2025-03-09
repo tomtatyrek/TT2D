@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_library(TT2D STATIC src/TT2D.cpp)
 
-add_subdirectory(submodules/SDL)
-add_subdirectory(submodules/SDL_image)
+add_subdirectory(vendored/SDL)
+add_subdirectory(vendored/SDL_image)
 
 target_link_libraries(TT2D SDL3::SDL3 SDL3_image::SDL3_image)

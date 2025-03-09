@@ -1,1 +1,3 @@
 /build/
+/vendored/SDL/*
+/vendored/SDL_image/*
