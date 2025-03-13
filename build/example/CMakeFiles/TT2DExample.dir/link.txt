@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\TT2DExample.dir/objects.a
-C:\msys64\mingw64\bin\ar.exe qc CMakeFiles\TT2DExample.dir/objects.a @CMakeFiles\TT2DExample.dir\objects1.rsp
-C:\msys64\mingw64\bin\c++.exe -Wl,--whole-archive CMakeFiles\TT2DExample.dir/objects.a -Wl,--no-whole-archive -o TT2DExample.exe -Wl,--out-implib,libTT2DExample.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\TT2DExample.dir\linkLibs.rsp
