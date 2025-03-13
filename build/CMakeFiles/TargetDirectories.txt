@@ -1,0 +1,10 @@
+C:/Users/tomta/Projects/C++/TT2D/build/CMakeFiles/edit_cache.dir
+C:/Users/tomta/Projects/C++/TT2D/build/CMakeFiles/rebuild_cache.dir
+C:/Users/tomta/Projects/C++/TT2D/build/include/CMakeFiles/edit_cache.dir
+C:/Users/tomta/Projects/C++/TT2D/build/include/CMakeFiles/rebuild_cache.dir
+C:/Users/tomta/Projects/C++/TT2D/build/src/CMakeFiles/TT2D.dir
+C:/Users/tomta/Projects/C++/TT2D/build/src/CMakeFiles/edit_cache.dir
+C:/Users/tomta/Projects/C++/TT2D/build/src/CMakeFiles/rebuild_cache.dir
+C:/Users/tomta/Projects/C++/TT2D/build/example/CMakeFiles/TT2DExample.dir
+C:/Users/tomta/Projects/C++/TT2D/build/example/CMakeFiles/edit_cache.dir
+C:/Users/tomta/Projects/C++/TT2D/build/example/CMakeFiles/rebuild_cache.dir

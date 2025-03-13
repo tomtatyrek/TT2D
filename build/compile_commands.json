@@ -1,0 +1,14 @@
+[
+{
+  "directory": "C:/Users/tomta/Projects/C++/TT2D/build/src",
+  "command": "C:/msys64/ucrt64/bin/g++.exe  @CMakeFiles/TT2D.dir/includes_CXX.rsp -g -o CMakeFiles/TT2D.dir/TT2D.cpp.obj -c C:/Users/tomta/Projects/C++/TT2D/src/TT2D.cpp",
+  "file": "C:/Users/tomta/Projects/C++/TT2D/src/TT2D.cpp",
+  "output": "src/CMakeFiles/TT2D.dir/TT2D.cpp.obj"
+},
+{
+  "directory": "C:/Users/tomta/Projects/C++/TT2D/build/example",
+  "command": "C:/msys64/ucrt64/bin/g++.exe  @CMakeFiles/TT2DExample.dir/includes_CXX.rsp -g -o CMakeFiles/TT2DExample.dir/main.cpp.obj -c C:/Users/tomta/Projects/C++/TT2D/example/main.cpp",
+  "file": "C:/Users/tomta/Projects/C++/TT2D/example/main.cpp",
+  "output": "example/CMakeFiles/TT2DExample.dir/main.cpp.obj"
+}
+]

@@ -1,0 +1,2 @@
+C:/msys64/ucrt64/bin/ar.exe qc libTT2D.a CMakeFiles/TT2D.dir/TT2D.cpp.obj
+C:/msys64/ucrt64/bin/ranlib.exe libTT2D.a
