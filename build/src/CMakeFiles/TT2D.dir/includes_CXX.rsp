@@ -1,1 +1,1 @@
--IC:/Users/tomta/Projects/C++/TT2D/src/../include
+-IC:/Users/tomta/Projects/C++/TT2D/src/../include -I"C:/Users/tomta/Projects/C++/TT2D/build/vendored/SDL/include-revision" -IC:/Users/tomta/Projects/C++/TT2D/vendored/SDL/include -IC:/Users/tomta/Projects/C++/TT2D/vendored/SDL_image/include

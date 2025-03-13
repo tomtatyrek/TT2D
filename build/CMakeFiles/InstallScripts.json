@@ -4,6 +4,9 @@
 		"C:/Users/tomta/Projects/C++/TT2D/build/cmake_install.cmake",
 		"C:/Users/tomta/Projects/C++/TT2D/build/include/cmake_install.cmake",
 		"C:/Users/tomta/Projects/C++/TT2D/build/src/cmake_install.cmake",
+		"C:/Users/tomta/Projects/C++/TT2D/build/vendored/cmake_install.cmake",
+		"C:/Users/tomta/Projects/C++/TT2D/build/vendored/SDL/cmake_install.cmake",
+		"C:/Users/tomta/Projects/C++/TT2D/build/vendored/SDL_image/cmake_install.cmake",
 		"C:/Users/tomta/Projects/C++/TT2D/build/example/cmake_install.cmake"
 	],
 	"Parallel" : false

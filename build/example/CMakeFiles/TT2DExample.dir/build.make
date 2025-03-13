@@ -97,6 +97,8 @@ TT2DExample_EXTERNAL_OBJECTS =
 example/TT2DExample.exe: example/CMakeFiles/TT2DExample.dir/main.cpp.obj
 example/TT2DExample.exe: example/CMakeFiles/TT2DExample.dir/build.make
 example/TT2DExample.exe: src/libTT2D.a
+example/TT2DExample.exe: vendored/SDL_image/libSDL3_image.dll.a
+example/TT2DExample.exe: vendored/SDL/libSDL3.dll.a
 example/TT2DExample.exe: example/CMakeFiles/TT2DExample.dir/linkLibs.rsp
 example/TT2DExample.exe: example/CMakeFiles/TT2DExample.dir/objects1.rsp
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/tomta/Projects/C++/TT2D/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable TT2DExample.exe"

@@ -96,6 +96,7 @@ TT2D_EXTERNAL_OBJECTS =
 
 src/libTT2D.a: src/CMakeFiles/TT2D.dir/TT2D.cpp.obj
 src/libTT2D.a: src/CMakeFiles/TT2D.dir/build.make
+src/libTT2D.a: C:/Users/tomta/Projects/C++/TT2D/vendored/SDL/src/dynapi/SDL_dynapi.sym
 src/libTT2D.a: src/CMakeFiles/TT2D.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/tomta/Projects/C++/TT2D/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libTT2D.a"
 	cd C:/Users/tomta/Projects/C++/TT2D/build/src && $(CMAKE_COMMAND) -P CMakeFiles/TT2D.dir/cmake_clean_target.cmake
