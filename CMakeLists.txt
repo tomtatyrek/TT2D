@@ -104,8 +104,20 @@ if (BUILD_EXAMPLES)
     target_link_libraries(SDLTesting ${TT2D_SDL3_TARGET_NAME} ${TT2D_SDL3_IMAGE_TARGET_NAME} ${TT2D_SDL3_TTF_TARGET_NAME})
 
     # SDL_Snake executable:
-    add_executable(SDL_Snake examples/example3/main.cpp
-            examples/example3/main.cpp)
+    add_executable(SDL_Snake
+            examples/example3/main.cpp
+            examples/example3/Game.cpp
+            examples/example3/Game.h
+            examples/example3/Snake.cpp
+            examples/example3/Snake.h
+            examples/example3/defines.h
+    )
     target_link_libraries(SDL_Snake ${TT2D_SDL3_TARGET_NAME})
+
+    # C_Snake executable:
+    add_executable(C_Snake
+            examples/example4/snake.c
+    )
+    target_link_libraries(C_Snake ${TT2D_SDL3_TARGET_NAME})
 
 endif()
