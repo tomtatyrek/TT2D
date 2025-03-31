@@ -7,6 +7,8 @@
 
 #include "SDL3/SDL.h"
 #include <vector>
+#include <queue>
+#include <random>
 
 #define DEFAULT_SNAKE_TEMPO 1000
 
@@ -29,7 +31,7 @@ enum Direction : char {
 //Game properties structure
 struct GameProperties {
 
-	int snakeBlockSize, widthInBlocks, heightInBlocks, snakeTempo;
+	int snakeBlockSize, widthInBlocks, heightInBlocks, snakeTempo, startingFood;
 	const char* title;
 	SDL_InitFlags initFlags;
 	SDL_WindowFlags windowFlags;
@@ -40,6 +42,7 @@ struct GameProperties {
 		int widthInBlocks,
 		int heightInBlocks,
 		int snakeTempo,
+		int startingFood,
 		const char* title,
 		SDL_InitFlags initFlags,
 		SDL_WindowFlags windowFlags);
@@ -60,8 +63,12 @@ class Game {
 	GameProperties gameProperties;
 	std::vector<std::vector<BlockState>> arena;
 	std::vector<BlockCoords> snake;
+	std::queue<Direction> directionBuffer {};
 	bool gameRunning = true;
-	Direction snakeDirection = RIGHT;
+
+	//Random number generation
+	std::random_device randomDevice;
+	std::mt19937 randomNumberGenerator {randomDevice()};
 
 public:
 
@@ -83,6 +90,7 @@ private:
 	inline void run();
 	inline void handleEvents();
 	[[nodiscard]] BlockCoords getBlockInDirection(BlockCoords current, Direction direction) const;
+	void spawnFood(int count);
 
 
 	[[nodiscard]] static SDL_Color getStateColor(BlockState state);

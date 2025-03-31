@@ -13,6 +13,7 @@ GameProperties::GameProperties(
 		const int widthInBlocks,
 		const int heightInBlocks,
 		const int snakeTempo,
+		const int startingFood,
 		const char* title,
 		const SDL_InitFlags initFlags,
 		const SDL_WindowFlags windowFlags
@@ -21,6 +22,7 @@ GameProperties::GameProperties(
 	this->widthInBlocks = std::abs(widthInBlocks);
 	this->heightInBlocks = std::abs(heightInBlocks);
 	this->snakeTempo = std::abs(snakeTempo);
+	this->startingFood = std::abs(startingFood);
 }
 
 bool BlockCoords::operator==(const BlockCoords a) const {
@@ -75,6 +77,7 @@ void Game::run() {
 	clearArena();
 	createSnake();
 	loadSnake();
+	spawnFood(gameProperties.startingFood);
 
 	//Event and render loop
 	while (gameRunning) {
@@ -85,8 +88,17 @@ void Game::run() {
 		//Sleep
 		std::this_thread::sleep_for(sleepDuration);
 
-		//SDL event handling:
+		//SDL event handling :
 		handleEvents();
+
+		//Makes sure the direction buffer doesnt become empty
+		if (directionBuffer.size() == 1) {
+			directionBuffer.push(directionBuffer.front());
+		}
+
+		//Loads snake dirrection from the buffer
+		const Direction snakeDirection = directionBuffer.front();
+		directionBuffer.pop();
 
 		//Snake movement
 		if (moveSnake(snakeDirection)) {
@@ -120,19 +132,19 @@ void Game::handleEvents() {
 			case SDL_EVENT_KEY_DOWN:
 				switch (event.key.scancode) {
 					case SDL_SCANCODE_LEFT:
-						if (snakeDirection % 2 == 1) snakeDirection = LEFT;
+						if (directionBuffer.back() % 2 == 1) directionBuffer.push(LEFT);
 					LOG_D("Pressed key LEFT");
 					break;
 					case SDL_SCANCODE_UP:
-						if (snakeDirection % 2 == 0) snakeDirection = UP;
+						if (directionBuffer.back() % 2 == 0) directionBuffer.push(UP);
 					LOG_D("Pressed key UP");
 					break;
 					case SDL_SCANCODE_RIGHT:
-						if (snakeDirection % 2 == 1) snakeDirection = RIGHT;
+						if (directionBuffer.back() % 2 == 1) directionBuffer.push(RIGHT);
 					LOG_D("Pressed key RIGHT");
 					break;
 					case SDL_SCANCODE_DOWN:
-						if (snakeDirection % 2 == 0) snakeDirection = DOWN;
+						if (directionBuffer.back() % 2 == 0) directionBuffer.push(DOWN);
 					LOG_D("Pressed key DOWN");
 					break;
 					default:
@@ -177,6 +189,27 @@ BlockCoords Game::getBlockInDirection(const BlockCoords current, const Direction
 
 }
 
+//Randomly spawns specified ammunt of foods to the arena
+void Game::spawnFood(const int count) {
+
+	std::uniform_int_distribution xDistribution {0, static_cast<int>(arena.size()-1)};
+	std::uniform_int_distribution yDistribution {0, static_cast<int>(arena[0].size()-1)};
+
+	for (int i = 0; i < count; i++) {
+
+		int x, y;
+
+		do {
+			x = xDistribution(randomNumberGenerator);
+			y = yDistribution(randomNumberGenerator);
+		} while (arena[x][y] != EMPTY);
+
+		arena[x][y] = FOOD;
+
+	}
+
+}
+
 //Sets snake to the default position
 void Game::createSnake(){
 	//Default starting location of the snake
@@ -187,8 +220,12 @@ void Game::createSnake(){
 		{(gameProperties.widthInBlocks/2 - 1), (gameProperties.heightInBlocks/2)},
 		{(gameProperties.widthInBlocks/2 - 2), (gameProperties.heightInBlocks/2)}
 	};
+
+	//Empties the direction buffer
+	directionBuffer = {};
+
 	//Default starting snake direction
-	snakeDirection = RIGHT;
+	directionBuffer.push(RIGHT);
 }
 
 //Renders the arena to the screen
@@ -204,13 +241,15 @@ void Game::renderArena() const {
 		// Inner loop iterates through each inner vector (columns)
 		for (int y = 0; y < arena.size(); y++) {
 
-			//Set color according to the block state
-			const auto [r, g, b, a] = getStateColor(arena[x][y]);
-			SDL_SetRenderDrawColor(renderer, r, g, b, a);
+			if (arena[x][y] != EMPTY) {
+				//Set color according to the block state
+				const auto [r, g, b, a] = getStateColor(arena[x][y]);
+				SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
-			//Render a rectangle with specified color
-			const SDL_FRect rect = getRectFromBlock({x, y});
-			SDL_RenderFillRect(renderer, &rect);
+				//Render a rectangle with specified color
+				const SDL_FRect rect = getRectFromBlock({x, y});
+				SDL_RenderFillRect(renderer, &rect);
+			}
 
 		}
 	}
@@ -232,13 +271,13 @@ SDL_FRect Game::getRectFromBlock(const BlockCoords blockCoords) const {
 SDL_Color Game::getStateColor(const BlockState state) {
 	switch (state) {
 		case EMPTY:
-			return {0,0,0,255};
+			return {0,0,0,0};
 		case FOOD:
-			return {0,0,255,0};
+			return {200,20,10,0};
 		case SNAKE_HEAD:
-			return {255,255,0,255};
+			return {150,200,0,255};
 		case SNAKE_BODY:
-			return {0,255,0,255};
+			return {0,150,0,255};
 		default:
 			return {0,0,0,0};
 	}
@@ -247,13 +286,22 @@ SDL_Color Game::getStateColor(const BlockState state) {
 //Moves the snake in the specfied direction
 bool Game::moveSnake(const Direction direction) {
 
+	//Finds out where is the snake moving to
+	const BlockCoords headDestination = getBlockInDirection(snake[0], direction);
+
+	//Grows the snake if he has ate a food and spawns new food
+	if (arena[headDestination.x][headDestination.y] == FOOD) {
+		snake.push_back({});
+		spawnFood(1);
+	}
+
 	//Moves the body
 	for (auto i = snake.size() - 1; i >= 1; --i) {
 		snake[i] = snake[i-1];
 	}
 
 	//Moves the head
-	snake[0] = getBlockInDirection(snake[1], direction);
+	snake[0] = headDestination;
 
 	//Checks for collisions of the snake with itself
 	for (auto i = 3; i < snake.size(); ++i) {
@@ -261,6 +309,7 @@ bool Game::moveSnake(const Direction direction) {
 	}
 
 	return false;
+
 }
 
 //Loads the blocks, which are part of the snake to arena

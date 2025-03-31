@@ -10,7 +10,7 @@
 
 
 //This code makes sure that debug printing does not get to release version
-#define LOG_DEBUG_MODE true
+#define LOG_DEBUG_MODE false
 
 #if(LOG_DEBUG_MODE)
 #define LOG_D(x) std::cout << x << "\n";

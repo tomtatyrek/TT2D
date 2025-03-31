@@ -19,8 +19,8 @@ write_basic_package_version_file(
 
 
 # Decide to build shared or static libraries
-option(TT2D_SHARED "Whether or not to build shared TT2D library" ON)
-option(TT2D_STATIC "Whether or not to build static TT2D library" OFF)
+option(TT2D_SHARED "Whether or not to build shared TT2D library" OFF)
+option(TT2D_STATIC "Whether or not to build static TT2D library" ON)
 
 
 
@@ -112,10 +112,5 @@ if (BUILD_EXAMPLES)
     )
     target_link_libraries(SDL_Snake ${TT2D_SDL3_TARGET_NAME})
 
-    # C_Snake executable:
-    add_executable(C_Snake
-            examples/example4/snake.c
-    )
-    target_link_libraries(C_Snake ${TT2D_SDL3_TARGET_NAME})
 
 endif()
