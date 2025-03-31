@@ -108,9 +108,7 @@ if (BUILD_EXAMPLES)
             examples/example3/main.cpp
             examples/example3/Game.cpp
             examples/example3/Game.h
-            examples/example3/Snake.cpp
-            examples/example3/Snake.h
-            examples/example3/defines.h
+            examples/example3/Log.h
     )
     target_link_libraries(SDL_Snake ${TT2D_SDL3_TARGET_NAME})
 

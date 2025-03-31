@@ -3,13 +3,16 @@
 //
 
 #include "Game.h"
+#include "Log.h"
 
 #include <iostream>
+#include <thread>
 
 GameProperties::GameProperties(
 		const int snakeBlockSize,
 		const int widthInBlocks,
 		const int heightInBlocks,
+		const int snakeTempo,
 		const char* title,
 		const SDL_InitFlags initFlags,
 		const SDL_WindowFlags windowFlags
@@ -17,14 +20,18 @@ GameProperties::GameProperties(
 	this->snakeBlockSize = std::abs(snakeBlockSize);
 	this->widthInBlocks = std::abs(widthInBlocks);
 	this->heightInBlocks = std::abs(heightInBlocks);
+	this->snakeTempo = std::abs(snakeTempo);
 }
 
+bool BlockCoords::operator==(const BlockCoords a) const {
+	return x == a.x && y == a.y;
+}
 
 
 Game::Game(const GameProperties &properties) : gameProperties{properties} {
 
 	//Fill arena with empty blocks
-	arena = {static_cast<long long unsigned int>(gameProperties.widthInBlocks), {static_cast<long long unsigned int>(gameProperties.heightInBlocks), EMPTY}};
+	clearArena();
 
 	//Initialize SDL
 	if (!SDL_Init(gameProperties.initFlags)) {
@@ -45,7 +52,9 @@ Game::Game(const GameProperties &properties) : gameProperties{properties} {
 		SDL_ShowWindow(window);
 	}
 
+	//Starts the game
 	run();
+
 }
 
 
@@ -58,77 +67,124 @@ Game::~Game() {
 	SDL_Quit();
 }
 
+void Game::run() {
 
+	//Sets up sleeping duration in between moves
+	const auto sleepDuration = std::chrono::milliseconds(gameProperties.snakeTempo);
 
-inline void Game::run() {
+	//Game setup:
+	snakeAlive = true;
+	clearArena();
+	createSnake();
+	loadSnake();
 
-	bool quit = false;
+	//Event and render loop
+	while (gameRunning) {
 
-	//Game loop
-	while (!quit) {
+		//Rendering
+		renderArena();
+
+		//Sleep
+		std::this_thread::sleep_for(sleepDuration);
 
 		//SDL event handling:
-		SDL_Event event;
-		while (SDL_PollEvent(&event)) {
-			switch (event.type) {
-				case SDL_EVENT_QUIT:
-					quit = true;
-					break;
-				default:
-					std::cerr << "Unhandled event type: " << event.type << "\n";
-			}
+		handleEvents();
+
+		if (snakeAlive) {
+
+			deleteSnake();
+			snakeAlive = !moveSnake(snakeDirection);
+			loadSnake();
+
+		} else {
+
+			snakeAlive = true;
+			clearArena();
+			createSnake();
+			loadSnake();
+
 		}
 
-		//Rendering:
-		renderArena();
 
 	}
 
 }
 
+//Handles SDL events
+void Game::handleEvents() {
 
+	SDL_Event event;
 
-void Game::createSnake(){
+	while (SDL_PollEvent(&event)) {
+		switch (event.type) {
+			case SDL_EVENT_QUIT:
+				gameRunning = false;  //Stops the game
+			break;
 
-	//Array with the default starting location of the snake
-	const BlockCoords startingSnakeLocations[] = {
-		{(gameProperties.widthInBlocks/2), (gameProperties.heightInBlocks/2)},
-		{(gameProperties.widthInBlocks/2 - 1), (gameProperties.heightInBlocks/2)},
-		{(gameProperties.widthInBlocks/2 - 2), (gameProperties.heightInBlocks/2)}
-	};
-
-	arena[startingSnakeLocations[0].x][startingSnakeLocations[0].y] = SNAKE_HEAD;
-	arena[startingSnakeLocations[1].x][startingSnakeLocations[1].y] = SNAKE_BODY_LEFT;
-	arena[startingSnakeLocations[2].x][startingSnakeLocations[2].y] = SNAKE_BODY_LEFT;
+			//Key-pressing handling
+			case SDL_EVENT_KEY_DOWN:
+				switch (event.key.scancode) {
+					case SDL_SCANCODE_LEFT:
+						snakeDirection = LEFT;
+					LOG_D("Pressed key LEFT");
+					break;
+					case SDL_SCANCODE_UP:
+						snakeDirection = UP;
+					LOG_D("Pressed key UP");
+					break;
+					case SDL_SCANCODE_RIGHT:
+						snakeDirection = RIGHT;
+					LOG_D("Pressed key RIGHT");
+					break;
+					case SDL_SCANCODE_DOWN:
+						snakeDirection = DOWN;
+					LOG_D("Pressed key DOWN");
+					break;
+					default:
+						IGNORE(("Unhandled key event: %u\n", event.key.scancode));
+				}
+			break;
+			default:
+				IGNORE(("Unhandled event type: %u\n", event.type));
+		}
+	}
 
 }
 
+//Sets snake to the default position
+void Game::createSnake(){
+	//Default starting location of the snake
+	snake = {
+		{(gameProperties.widthInBlocks/2 + 2), (gameProperties.heightInBlocks/2)},
+		{(gameProperties.widthInBlocks/2 + 1), (gameProperties.heightInBlocks/2)},
+		{(gameProperties.widthInBlocks/2    ), (gameProperties.heightInBlocks/2)},
+		{(gameProperties.widthInBlocks/2 - 1), (gameProperties.heightInBlocks/2)},
+		{(gameProperties.widthInBlocks/2 - 2), (gameProperties.heightInBlocks/2)}
+	};
+}
+
+//Renders the arena to the screen
 void Game::renderArena() const {
 
 	//Renders the whole screen black
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0 , 255);
 	SDL_RenderClear(renderer);
 
-	//Keeps track of current coordinates
-	int x = 0, y = 0;
+	// Outer loop iterates through the outer vector (rows)
+	for (int x = 0; x < arena.size(); x++) {
 
-	// Outer loop iterates through the outer vector
-	for (const auto & i : arena) {
-
-		// Inner loop iterates through each inner vector
-		for (const auto & j : i) {
+		// Inner loop iterates through each inner vector (columns)
+		for (int y = 0; y < arena.size(); y++) {
 
 			//Set color according to the block state
-			const auto [r, g, b, a] = getStateColor(j);
+			const auto [r, g, b, a] = getStateColor(arena[x][y]);
 			SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 			//Render a rectangle with specified color
 			const SDL_FRect rect = getRectFromBlock({x, y});
 			SDL_RenderFillRect(renderer, &rect);
 
-			y++;
 		}
-		x++;
 	}
 
 	//Presents the rendered screen
@@ -136,6 +192,7 @@ void Game::renderArena() const {
 
 }
 
+//Retuns an SDL_FRect, which corresponds to the specified BlockCoords
 SDL_FRect Game::getRectFromBlock(const BlockCoords blockCoords) const {
 	return {static_cast<float>(blockCoords.x * gameProperties.snakeBlockSize),
 		static_cast<float>(blockCoords.y * gameProperties.snakeBlockSize),
@@ -143,30 +200,77 @@ SDL_FRect Game::getRectFromBlock(const BlockCoords blockCoords) const {
 		static_cast<float>(gameProperties.snakeBlockSize)};
 }
 
+//Returns the color of a block with specified state
 SDL_Color Game::getStateColor(const BlockState state) {
 	switch (state) {
 		case EMPTY:
 			return {0,0,0,255};
-			break;
 		case FOOD:
 			return {0,0,255,0};
-		break;
 		case SNAKE_HEAD:
 			return {255,255,0,255};
-		break;
-		case SNAKE_BODY_LEFT:
-		case SNAKE_BODY_UP:
-		case SNAKE_BODY_RIGHT:
-		case SNAKE_BODY_DOWN:
+		case SNAKE_BODY:
 			return {0,255,0,255};
-		break;
 		default:
 			return {0,0,0,0};
 	}
 }
 
-void Game::moveSnake(Direction direction) {
+//Moves the snake in the specfied direction
+bool Game::moveSnake(const Direction direction) {
 
-	//TODO: Complete starting here!
+	for (auto i = snake.size() - 1; i >= 1; --i) {
+		snake[i] = snake[i-1];
+	}
 
+	switch (direction) {
+		case LEFT:
+			snake[0] = {snake[1].x - 1, snake[1].y};
+			break;
+		case UP:
+			snake[0] = {snake[1].x, snake[1].y - 1};
+			break;
+		case RIGHT:
+			snake[0] = {snake[1].x + 1, snake[1].y};
+			break;
+		case DOWN:
+			snake[0] = {snake[1].x, snake[1].y + 1};
+			break;
+	}
+
+	//Checks for collisions of the snake with itself
+	for (auto i = 3; i < snake.size(); ++i) {
+		if (snake[i] == snake[0]) return true;
+	}
+
+	return false;
+}
+
+//Loads the blocks, which are part of the snake to arena
+void Game::loadSnake() {
+
+	arena[snake[0].x][snake[0].y] = SNAKE_HEAD;
+
+	for (int i = 1; i < snake.size(); i++) {
+
+		arena[snake[i].x][snake[i].y] = SNAKE_BODY;
+
+	}
+
+}
+
+//Sets all snake blocks in the arena to EMPTY
+void Game::deleteSnake() {
+	for (auto& i : arena) {
+		for (auto& j : i) {
+			if (j == SNAKE_HEAD || j == SNAKE_BODY) {
+				j = EMPTY;
+			}
+		}
+	}
+}
+
+//Sets all blocks in arena to EMPTY
+void Game::clearArena() {
+	arena = {static_cast<long long unsigned int>(gameProperties.widthInBlocks), {static_cast<long long unsigned int>(gameProperties.heightInBlocks), EMPTY}};
 }
