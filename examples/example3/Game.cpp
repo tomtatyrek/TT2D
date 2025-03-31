@@ -72,8 +72,6 @@ void Game::run() {
 	//Sets up sleeping duration in between moves
 	const auto sleepDuration = std::chrono::milliseconds(gameProperties.snakeTempo);
 
-	//Game setup:
-	snakeAlive = true;
 	clearArena();
 	createSnake();
 	loadSnake();
@@ -90,19 +88,16 @@ void Game::run() {
 		//SDL event handling:
 		handleEvents();
 
-		if (snakeAlive) {
-
+		//Snake movement
+		if (moveSnake(snakeDirection)) {
+			//Executes if the snake is dead
 			deleteSnake();
-			snakeAlive = !moveSnake(snakeDirection);
-			loadSnake();
-
-		} else {
-
-			snakeAlive = true;
-			clearArena();
 			createSnake();
 			loadSnake();
-
+		} else {
+			//Executes if the snake is alive
+			deleteSnake();
+			loadSnake();
 		}
 
 
@@ -125,19 +120,19 @@ void Game::handleEvents() {
 			case SDL_EVENT_KEY_DOWN:
 				switch (event.key.scancode) {
 					case SDL_SCANCODE_LEFT:
-						snakeDirection = LEFT;
+						if (snakeDirection % 2 == 1) snakeDirection = LEFT;
 					LOG_D("Pressed key LEFT");
 					break;
 					case SDL_SCANCODE_UP:
-						snakeDirection = UP;
+						if (snakeDirection % 2 == 0) snakeDirection = UP;
 					LOG_D("Pressed key UP");
 					break;
 					case SDL_SCANCODE_RIGHT:
-						snakeDirection = RIGHT;
+						if (snakeDirection % 2 == 1) snakeDirection = RIGHT;
 					LOG_D("Pressed key RIGHT");
 					break;
 					case SDL_SCANCODE_DOWN:
-						snakeDirection = DOWN;
+						if (snakeDirection % 2 == 0) snakeDirection = DOWN;
 					LOG_D("Pressed key DOWN");
 					break;
 					default:
@@ -151,6 +146,37 @@ void Game::handleEvents() {
 
 }
 
+//Returns the next block the snake head will move to if it goes in the specified direction
+BlockCoords Game::getBlockInDirection(const BlockCoords current, const Direction direction) const {
+
+	const int sizeX = static_cast<int>(arena.size());
+	const int sizeY = static_cast<int>(arena[0].size());
+
+	int deltaX = 0;
+	int deltaY = 0;
+
+	switch (direction) {
+		case RIGHT:
+			deltaX++;
+			break;
+		case UP:
+			deltaY--;
+			break;
+		case LEFT:
+			deltaX--;
+			break;
+		case DOWN:
+			deltaY++;
+			break;
+	}
+
+	return {
+		current.x + deltaX < 0 ? current.x + deltaX + sizeX : (current.x + deltaX) % sizeX,
+		current.y + deltaY < 0 ? current.y + deltaY + sizeY : (current.y + deltaY) % sizeY,
+	};
+
+}
+
 //Sets snake to the default position
 void Game::createSnake(){
 	//Default starting location of the snake
@@ -161,6 +187,8 @@ void Game::createSnake(){
 		{(gameProperties.widthInBlocks/2 - 1), (gameProperties.heightInBlocks/2)},
 		{(gameProperties.widthInBlocks/2 - 2), (gameProperties.heightInBlocks/2)}
 	};
+	//Default starting snake direction
+	snakeDirection = RIGHT;
 }
 
 //Renders the arena to the screen
@@ -219,24 +247,13 @@ SDL_Color Game::getStateColor(const BlockState state) {
 //Moves the snake in the specfied direction
 bool Game::moveSnake(const Direction direction) {
 
+	//Moves the body
 	for (auto i = snake.size() - 1; i >= 1; --i) {
 		snake[i] = snake[i-1];
 	}
 
-	switch (direction) {
-		case LEFT:
-			snake[0] = {snake[1].x - 1, snake[1].y};
-			break;
-		case UP:
-			snake[0] = {snake[1].x, snake[1].y - 1};
-			break;
-		case RIGHT:
-			snake[0] = {snake[1].x + 1, snake[1].y};
-			break;
-		case DOWN:
-			snake[0] = {snake[1].x, snake[1].y + 1};
-			break;
-	}
+	//Moves the head
+	snake[0] = getBlockInDirection(snake[1], direction);
 
 	//Checks for collisions of the snake with itself
 	for (auto i = 3; i < snake.size(); ++i) {

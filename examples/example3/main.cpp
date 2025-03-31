@@ -12,7 +12,7 @@
 #define WINDOW_TITLE "Basic snake"
 #define SDL_INIT_FLAGS (SDL_INIT_VIDEO)
 #define SDL_WINDOW_FLAGS 0
-#define SNAKE_TEMPO 1000
+#define SNAKE_TEMPO 200
 
 int main() {
 	std::cout << "Hello World!\n\n";

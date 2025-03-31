@@ -20,7 +20,7 @@ enum BlockState : char {
 
 //Define snake head direction
 enum Direction : char {
-	RIGHT,
+	RIGHT = 0,
 	UP,
 	LEFT,
 	DOWN
@@ -61,7 +61,6 @@ class Game {
 	std::vector<std::vector<BlockState>> arena;
 	std::vector<BlockCoords> snake;
 	bool gameRunning = true;
-	bool snakeAlive = true;
 	Direction snakeDirection = RIGHT;
 
 public:
@@ -77,11 +76,13 @@ private:
 
 	//Returns true if the snake colides with itself
 	bool moveSnake(Direction direction);
+
 	void loadSnake();
 	void deleteSnake();
 	inline void clearArena();
 	inline void run();
 	inline void handleEvents();
+	[[nodiscard]] BlockCoords getBlockInDirection(BlockCoords current, Direction direction) const;
 
 
 	[[nodiscard]] static SDL_Color getStateColor(BlockState state);
