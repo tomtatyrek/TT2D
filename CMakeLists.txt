@@ -64,11 +64,13 @@ endif()
 # Adds sources to TT2D library
 target_sources(${TT2D_TARGET_NAME}
         PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/TT2D.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/App.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Renderable.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Window.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Log.cpp
+        src/components/Rectangle.cpp
+        src/general/TT2D.cpp
+        src/general/App.cpp
+        src/render/Renderable.cpp
+        src/render/Renderer.cpp
+        src/render/Window.cpp
+        src/util/Log.cpp
 )
 
 # Adds include directory to TT2D library

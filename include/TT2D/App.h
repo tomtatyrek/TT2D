@@ -5,15 +5,15 @@
 #ifndef TT2D_APP_H
 #define TT2D_APP_H
 
-#include "SDL3/SDL.h"
+#include <vector>
 #include "Window.h"
-#include <list>
 
 namespace TT2D {
 
 	class App {
 
-		std::list<Window*> windows;
+		//Stores all the windows which belong to this app
+		std::vector<Window*> windows;
 
 	public:
 		App();

@@ -4,9 +4,12 @@
 
 //All TT2D header files to be included:
 #include "App.h"
-#include "Log.h"
+#include "Color.h"
+#include "Rectangle.h"
 #include "Renderable.h"
 #include "Window.h"
+#include "TT2D_defines.h"
+#include "Log.h"
 
 namespace TT2D {
 
