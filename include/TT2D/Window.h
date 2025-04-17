@@ -5,9 +5,11 @@
 #ifndef TT2D_WINDOW_H
 #define TT2D_WINDOW_H
 
-#include "SDL3/SDL.h"
-#include "Renderable.h"
 #include <list>
+
+#include "SDL3/SDL.h"
+
+#include "Renderer.h"
 
 namespace TT2D {
 
@@ -42,25 +44,26 @@ namespace TT2D {
 
 	class Window {
 
-		SDL_Window* SDLWindow;
-		SDL_Renderer* renderer;
-		std::list<Renderable*> renderableContent;
-		WindowProperties* properties;
+		SDL_Window* mSdlWindow;
+		Renderer* mRenderer;
+		WindowProperties* mProperties;
+		std::list<Renderable*> mContent {};
 
 	public:
 
-		void add(Renderable* renderable);
-		void remove(Renderable* renderable);
-		bool contains(Renderable* renderable);
-		void render();
-		void show();
-		void hide();
-
 		Window() = delete;
-		explicit Window(WindowProperties& properties);
+		explicit Window(WindowProperties& windowProperties);
 
 		~Window();
 
+		[[nodiscard]] SDL_Window *getSdlWindow() const;
+		void renderContent() const;
+		void clear(Color color) const;
+		void clear() const;
+
+		void add(Renderable* renderable);
+		void remove(Renderable* renderable);
+		bool contains(Renderable* renderable) const;
 	};
 
 } // TT2D
