@@ -63,7 +63,7 @@ namespace TT2D {
 
 		void add(Renderable* renderable);
 		void remove(Renderable* renderable);
-		bool contains(Renderable* renderable);
+		bool contains(Renderable* renderable) const;
 	};
 
 } // TT2D

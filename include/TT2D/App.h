@@ -13,11 +13,17 @@ namespace TT2D {
 	class App {
 
 		//Stores all the windows which belong to this app
-		std::vector<Window*> windows;
+		std::list<Window*> mWindows;
 
 	public:
 		App();
 		~App();
+
+		void start();
+		
+		void add(Window* window);
+		void remove(Window* window);
+		bool contains(Window* window) const;
 
 	};
 

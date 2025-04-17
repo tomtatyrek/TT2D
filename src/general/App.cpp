@@ -2,6 +2,8 @@
 // Created by Tomáš Tatyrek on 15/03/2025.
 //
 
+#include <algorithm>
+
 #include "TT2D/App.h"
 #include "SDL3/SDL.h"
 #include "SDL3_ttf/SDL_ttf.h"
@@ -23,5 +25,45 @@ namespace TT2D {
 		TTF_Quit();
 
 	}
+
+	void App::start() {
+
+		bool isRunning = true;
+
+		while (isRunning) {
+
+			SDL_Event event;
+			while (SDL_PollEvent(&event)) {
+				switch (event.type) {
+					case SDL_EVENT_QUIT:
+						isRunning = false;
+						break;
+				}
+			}
+
+			for (Window* window : mWindows) {
+				window->clear();
+				window->renderContent();
+			}
+
+		}
+
+	}
+	
+	void App::add(Window* window) {
+		if (!contains(window)) {
+			mWindows.push_back(window);
+		}
+	}
+	
+	void App::remove(Window* window) {
+		mWindows.remove(window);
+	}
+
+	bool App::contains(Window* window) const {
+		if (std::find(mWindows.begin(), mWindows.end(), window) != mWindows.end()) return true;
+		else return false;
+	}
+
 
 } // TT2D

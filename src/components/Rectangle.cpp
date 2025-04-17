@@ -3,7 +3,6 @@
 //
 
 #include "TT2D/Rectangle.h"
-#include "../../vendored/SDL/src/render/SDL_sysrender.h"
 
 namespace TT2D {
 

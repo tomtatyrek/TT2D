@@ -72,7 +72,7 @@ namespace TT2D {
 		mContent.remove(renderable);
 	}
 
-	bool Window::contains(Renderable* renderable) {
+	bool Window::contains(Renderable* renderable) const{
 		if (std::find(mContent.begin(), mContent.end(), renderable) != mContent.end()) return true;
 		else return false;
 	}

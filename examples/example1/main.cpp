@@ -6,13 +6,13 @@ int main() {
 
 	hello();
 
-	WindowProperties properties {};
-
-	Window window {properties};
-
 	Rectangle rect1 {50, 50, 300, 100, {0, 0, 255, 255}};
 
+	WindowProperties properties {};
+	Window window {properties};
 	window.add(&rect1);
 
-	window.renderContent();
+	App app {};
+	app.add(&window);
+	app.start();
 }
