@@ -11,6 +11,7 @@ class Renderable {
 
 public:
 
+	virtual ~Renderable() = default;
 	virtual void render(SDL_Renderer* sdlRenderer) const = 0;
 
 };

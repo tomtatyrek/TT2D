@@ -1,5 +1,5 @@
 //
-// Created by tomta on 17.04.2025.
+// Created by Tomáš Tatyrek on 17.04.2025.
 //
 
 #ifndef TT2D_COLOR_H

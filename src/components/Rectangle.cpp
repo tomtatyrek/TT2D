@@ -1,12 +1,12 @@
 //
-// Created by tomta on 17.04.2025.
+// Created by Tomáš Tatyrek on 17.04.2025.
 //
 
 #include "TT2D/components/Rectangle.h"
 
 namespace TT2D {
 
-	Rectangle::Rectangle(float xPos, float yPos, float width, float height, Color color) :
+	Rectangle::Rectangle(const float xPos, const float yPos, const float width, const float height, const Color color) :
 			mSdlRectangle({xPos, yPos, width, height}),
 			mColor(color) {
 

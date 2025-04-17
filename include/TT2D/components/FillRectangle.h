@@ -12,6 +12,8 @@ namespace TT2D {
 	class FillRectangle : public Rectangle {
 
 	public:
+
+		FillRectangle() = delete;
 		FillRectangle(float xPos, float yPos, float width, float height, Color color);
 
 		void render(SDL_Renderer* sdlRenderer) const override;

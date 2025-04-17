@@ -1,5 +1,5 @@
 //
-// Created by tomta on 17.04.2025.
+// Created by Tomáš Tatyrek on 17.04.2025.
 //
 
 #ifndef TT2D_RECTANGLE_H
@@ -21,9 +21,10 @@ protected:
 
 public:
 
+	Rectangle() = delete;
 	Rectangle(float xPos, float yPos, float width, float height, Color color);
 
-	virtual void render(SDL_Renderer* sdlRenderer) const override;
+	void render(SDL_Renderer* sdlRenderer) const override;
 
 };
 

@@ -1,5 +1,5 @@
 //
-// Created by tomta on 17.04.2025.
+// Created by Tomáš Tatyrek on 17.04.2025.
 //
 
 #include "TT2D/components/FillRectangle.h"
@@ -13,6 +13,7 @@ namespace TT2D {
 
 	}
 
-	FillRectangle::FillRectangle(float xPos, float yPos, float width, float height, Color color) : Rectangle(xPos, yPos, width, height, color) {}
+	FillRectangle::FillRectangle(const float xPos, const float yPos, const float width, const float height, const Color color) :
+			Rectangle(xPos, yPos, width, height, color) {}
 
 }// namespace TT2D
