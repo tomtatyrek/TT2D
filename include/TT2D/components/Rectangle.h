@@ -14,6 +14,8 @@ namespace TT2D {
 
 class Rectangle : public Renderable {
 
+protected:
+
 	SDL_FRect mSdlRectangle;
 	Color mColor;
 
@@ -21,7 +23,7 @@ public:
 
 	Rectangle(float xPos, float yPos, float width, float height, Color color);
 
-	void render(SDL_Renderer* sdlRenderer) const override;
+	virtual void render(SDL_Renderer* sdlRenderer) const override;
 
 };
 
