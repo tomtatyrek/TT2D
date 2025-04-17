@@ -7,8 +7,8 @@
 
 #include "SDL3/SDL.h"
 
-#include "Color.h"
-#include "Renderable.h"
+#include "TT2D/render/Color.h"
+#include "TT2D/render/Renderable.h"
 
 namespace TT2D {
 

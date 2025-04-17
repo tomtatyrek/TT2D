@@ -2,7 +2,7 @@
 // Created by Tomáš Tatyrek on 15/03/2025.
 //
 
-#include "TT2D/Window.h"
+#include "TT2D/render/Window.h"
 
 #include <algorithm>
 

@@ -2,7 +2,7 @@
 // Created by tomta on 17.04.2025.
 //
 
-#include "TT2D/Rectangle.h"
+#include "TT2D/components/Rectangle.h"
 
 namespace TT2D {
 
