@@ -6,7 +6,7 @@
 #define TT2D_APP_H
 
 #include <vector>
-#include "Window.h"
+#include "TT2D/render/Window.h"
 
 namespace TT2D {
 

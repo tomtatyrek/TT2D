@@ -2,7 +2,7 @@
 // Created by Tomáš Tatyrek on 15/03/2025.
 //
 
-#include "TT2D/Log.h"
+#include "TT2D/util/Log.h"
 #include "SDL3/SDL.h"
 
 namespace TT2D {
