@@ -4,10 +4,12 @@
 
 //All TT2D header files to be included:
 #include "App.h"
+#include "TT2D/components/primitives/Point.h"
+#include "TT2D/components/primitives/PointCollection.h"
 #include "TT2D/components/Arc.h"
 #include "TT2D/components/FillRectangle.h"
 #include "TT2D/components/Line.h"
-#include "TT2D/components/Point.h"
+#include "TT2D/components/ColoredPoint.h"
 #include "TT2D/components/Rectangle.h"
 #include "TT2D/render/Color.h"
 #include "TT2D/render/Renderable.h"

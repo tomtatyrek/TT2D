@@ -64,10 +64,12 @@ endif()
 # Adds sources to TT2D library
 target_sources(${TT2D_TARGET_NAME}
         PRIVATE
+        src/components/primitives/Point.cpp
+        src/components/primitives/PointCollection.cpp
         src/components/Arc.cpp
         src/components/FillRectangle.cpp
         src/components/Line.cpp
-        src/components/Point.cpp
+        src/components/ColoredPoint.cpp
         src/components/Rectangle.cpp
         src/events/Event.cpp
         src/general/TT2D.cpp
