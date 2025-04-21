@@ -3,7 +3,7 @@ project(TT2D LANGUAGES C CXX VERSION 0.1.0)
 
 
 # Set C++ standard
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -68,7 +68,7 @@ target_sources(${TT2D_TARGET_NAME}
         src/components/primitives/PointCollection.cpp
         src/components/Arc.cpp
         src/components/FillRectangle.cpp
-        src/components/Line.cpp
+        src/components/ColoredLine.cpp
         src/components/ColoredPoint.cpp
         src/components/Rectangle.cpp
         src/events/Event.cpp

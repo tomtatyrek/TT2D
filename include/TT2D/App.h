@@ -19,7 +19,7 @@ namespace TT2D {
 		App();
 		~App();
 
-		void start();
+		void start() const;
 		
 		void add(Window* window);
 		void remove(Window* window);

@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "../../../include/TT2D/components/primitives/Point.h"
+#include "TT2D/components/primitives/Point.h"
 
 namespace TT2D {
 	Point::Point(const TT2D_RCT x, const TT2D_RCT y) : x(x), y(y) {}
@@ -77,6 +77,22 @@ namespace TT2D {
 			};
 	}
 
+	void Point::operator+=(const float addend) {
+		*this = *this + addend;
+	}
+
+	void Point::operator-=(const float subtrahend) {
+		*this = *this - subtrahend;
+	}
+
+	void Point::operator*=(const float multiplier) {
+		*this = *this * multiplier;
+	}
+
+	void Point::operator/=(const float divisor) {
+		*this = *this / divisor;
+	}
+
 	TT2D_RCT Point::operator*(const Point point) const {
 		return this->x * point.x + this->y * point.y;
 	}
@@ -95,7 +111,7 @@ namespace TT2D {
 		return {2*inversionCenter.x - x, 2*inversionCenter.y - y};
 	}
 
-	void Point::flipAroundAPoint(const Point inversionCenter) {
+	void Point::invertAroundPoint(const Point inversionCenter) {
 		*this = getPointReflection(inversionCenter);
 	}
 

@@ -11,15 +11,15 @@
 
 namespace TT2D {
 
-class Line : public Renderable {
+class ColoredLine : public Renderable {
 
 	float mX1, mY1, mX2, mY2;
 	Color mColor;
 
 public:
 
-	Line() = delete;
-	Line(float x1, float y1, float x2, float y2, Color color);
+	ColoredLine() = delete;
+	ColoredLine(float x1, float y1, float x2, float y2, Color color);
 	void render(SDL_Renderer *sdlRenderer) const override;
 
 };

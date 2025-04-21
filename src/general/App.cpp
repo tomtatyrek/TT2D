@@ -26,7 +26,7 @@ namespace TT2D {
 
 	}
 
-	void App::start() {
+	void App::start() const {
 
 		bool isRunning = true;
 
@@ -45,6 +45,8 @@ namespace TT2D {
 				window->clear();
 				window->renderContent();
 			}
+
+			SDL_Delay(1);
 
 		}
 

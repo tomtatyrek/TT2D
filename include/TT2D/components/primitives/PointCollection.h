@@ -5,19 +5,24 @@
 #ifndef TT2D_POINTCOLLECTION_H
 #define TT2D_POINTCOLLECTION_H
 
-#include <vector>
+#include <array>
 #include "Point.h"
 
 namespace TT2D {
 
-class PointCollection : public std::vector<Point> {
+	template <std::size_t Size>
+	class PointCollection : public std::array<Point, Size> {
 
-public:
-	void movePoints(Point direction);
-	void flipAroundAPoint(Point inversionCenter);
-	void rotate(Point center, TT2D_RAT angle);
+	public:
+		void movePoints(Point direction);
+		void invertAroundPoint(Point inversionCenter);
+		void rotate(Point center, TT2D_RAT angle);
+		void forEach(void (*function)(Point& point));
+		[[nodiscard]] Point getCenterPoint() const;
+		void scale(float scale, Point centerPoint);
+		void scale(float scale);
 
-};
+	};
 
 } // TT2D
 

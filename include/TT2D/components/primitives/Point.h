@@ -9,9 +9,8 @@
 
 namespace TT2D {
 
-class Point {
+struct Point {
 
-public:
 	TT2D_RCT x = 0, y = 0;
 
 	Point() = default;
@@ -33,12 +32,17 @@ public:
 	Point operator* (TT2D_RCT multiplier) const;
 	Point operator/ (TT2D_RCT divisor) const;
 
+	void operator+= (TT2D_RCT addend);
+	void operator-= (TT2D_RCT subtrahend);
+	void operator*= (TT2D_RCT multiplier);
+	void operator/= (TT2D_RCT divisor);
+
 	//Dot product
 	TT2D_RCT operator* (Point point) const;
 	[[nodiscard]] TT2D_RCT dotProduct(Point point) const;
 
 	void move(Point direction);
-	void flipAroundAPoint(Point inversionCenter);
+	void invertAroundPoint(Point inversionCenter);
 	[[nodiscard]] Point getPointReflection(Point inversionCenter) const;
 	void rotate(Point center, TT2D_RAT angle);
 	[[nodiscard]] Point getRotatedPoint(Point center, TT2D_RAT angle) const;

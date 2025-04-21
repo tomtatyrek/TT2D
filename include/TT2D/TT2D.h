@@ -8,7 +8,7 @@
 #include "TT2D/components/primitives/PointCollection.h"
 #include "TT2D/components/Arc.h"
 #include "TT2D/components/FillRectangle.h"
-#include "TT2D/components/Line.h"
+#include "TT2D/components/ColoredLine.h"
 #include "TT2D/components/ColoredPoint.h"
 #include "TT2D/components/Rectangle.h"
 #include "TT2D/render/Color.h"
